@@ -14,7 +14,9 @@ Item {
   opacity: ListView.isCurrentItem ? 1.0 : 0.2
 
   Behavior on opacity {
-    NumberAnimation { duration: 200 }
+    NumberAnimation {
+      duration: 200
+    }
   }
 
   Item {
@@ -31,16 +33,23 @@ Item {
 
     Image {
       id: imageSource
+      opacity: 0
+      source: image
       width: parent.width
       height: parent.height
       sourceSize.width: parent.width
       sourceSize.height: parent.height
-      source: image
-      opacity: 0
-      onStatusChanged: if (status === Image.Ready) opacity = 1;
+
+      onStatusChanged: {
+        if (status === Image.Ready) {
+          opacity = 1
+        }
+      }
 
       Behavior on opacity {
-        NumberAnimation { duration: 200 }
+        NumberAnimation {
+          duration: 200
+        }
       }
     }
   }
@@ -53,7 +62,9 @@ Item {
     opacity: wrapper.ListView.isCurrentItem ? 1.0 : 0.0
 
     Behavior on opacity {
-      NumberAnimation { duration: 200 }
+      NumberAnimation {
+        duration: 200
+      }
     }
   }
 

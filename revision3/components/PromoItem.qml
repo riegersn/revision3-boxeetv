@@ -9,20 +9,19 @@ import "../js/style.js" as Style
 
 Item {
   id: wrapper
-
-  property bool imageLoaded: false
-  property ListView parentView: null
-
   width: 895
   height: 400
+  property bool imageLoaded: false
+  property ListView parentView: null
   opacity: (wrapper.ListView.isCurrentItem && parentView.activeFocus) ? 1 : 0.2
-
   onImageLoadedChanged: firstImageLoaded();
 
   signal firstImageLoaded;
 
   Behavior on opacity {
-    NumberAnimation { duration: 400 }
+    NumberAnimation {
+      duration: 400
+    }
   }
 
   Rectangle {
@@ -38,7 +37,9 @@ Item {
       opacity: (imageSource.status === Image.Ready) ? 0.0 : 1.0
 
       Behavior on opacity {
-        NumberAnimation { duration: 300 }
+        NumberAnimation {
+          duration: 300
+        }
       }
     }
   }
@@ -53,16 +54,20 @@ Item {
     asynchronous: true
     sourceSize.width: 895
     sourceSize.height: 400
+
     onStatusChanged: {
       if (status === Image.Ready) {
         opacity = 1;
-        if (wrapper.ListView.isCurrentItem)
+        if (wrapper.ListView.isCurrentItem) {
           imageLoaded = true
+        }
       }
     }
 
     Behavior on opacity {
-      NumberAnimation { duration: 300 }
+      NumberAnimation {
+        duration: 300
+      }
     }
 
   }
@@ -75,7 +80,9 @@ Item {
     opacity: (wrapper.ListView.isCurrentItem && parentView.activeFocus) ? 1 : 0
 
     Behavior on opacity {
-      NumberAnimation { duration: 300 }
+      NumberAnimation {
+        duration: 300
+      }
     }
 
     Column {

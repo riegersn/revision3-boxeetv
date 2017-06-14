@@ -27,12 +27,14 @@ Window {
     switch (event.key) {
       case Qt.Key_H:
       case Qt.Key_Home:
-      case Qt.Key_HomePage:
-        {
-          if (mediaOpen || lockPlay) Revision.playerStop();
-          else Revision.exit();
-          break;
+      case Qt.Key_HomePage: {
+        if (mediaOpen || lockPlay) {
+          Revision.playerStop();
+        } else {
+          Revision.exit();
         }
+        break;
+      }
       case Qt.Key_G:
         guides.visible = !guides.visible;
         break;
@@ -58,9 +60,9 @@ Window {
   }
 
   Item {
-    y: (episodeList.activeFocus) ? -140 : 165
     height: 915
     width: parent.width
+    y: (episodeList.activeFocus) ? -140 : 165
 
     Behavior on y {
       NumberAnimation {
@@ -100,8 +102,9 @@ Window {
 
           // hack to make sure the splash stays up until promo image is ready
           onFirstImageLoaded: {
-            if (!appStarted)
+            if (!appStarted) {
               boxeeAPI.appStarted(true);
+            }
             appStarted = true;
           }
         }
@@ -183,7 +186,9 @@ Window {
       }
 
       Behavior on opacity {
-        NumberAnimation { duration: 300 }
+        NumberAnimation {
+          duration: 300
+        }
       }
 
       delegate: EpisodeItem {}

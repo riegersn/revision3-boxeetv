@@ -1,3 +1,7 @@
+/**
+revision.js
+**/
+
 Qt.include('utility.js');
 
 var waitVisible = false;
@@ -24,19 +28,21 @@ function sendWithArgs() {
 }
 
 function print(item1, item2) {
-  if (item2 === undefined)
+  if (item2 === undefined) {
     boxeeAPI.logInfo('revision3 [' + arguments.callee.caller.name + '] ' + item1);
-  else
+  } else {
     boxeeAPI.logInfo('revision3 [' + item1 + '] ' + item2);
+  }
 }
 
 // logging
 function printf(message) {
   var args = Array.prototype.slice.call(arguments);
-  if (args.length === 1)
+  if (args.length === 1) {
     boxeeAPI.logInfo('revision3 [' + arguments.callee.caller.name + '] ' + message);
-  else if (args.length > 1)
+  } else if (args.length > 1) {
     boxeeAPI.logInfo('revision3 [' + arguments.callee.caller.name + '] ' + vsprintf(message, args.slice(1)));
+  }
 }
 
 function RequestResult(_code, _response) {
@@ -60,8 +66,9 @@ function uiHideWait() {
 }
 
 function uiOkDialog(title, message, callback, callback2) {
-  if (!isFunction(callback2))
+  if (!isFunction(callback2)) {
     callback2 = callback;
+  }
 
   printf('showing ok dialog from (%s)', arguments.callee.caller.name);
   boxeeAPI.showOkDialog((title || 'Revision3'), message, callback, callback2, 'OK', true);
@@ -73,11 +80,13 @@ function uiConfirmDialog(title, message, callback, callback2, cancel, ok) {
 }
 
 function uiFillList(data, model, clear) {
-  if (clear !== undefined && clear)
+  if (clear !== undefined && clear) {
     model.clear();
+  }
 
-  for (var i = 0; i < data.length; i++)
+  for (var i = 0; i < data.length; i++) {
     model.append(data[i]);
+  }
 }
 
 function linkMediaPlayer() {
@@ -97,8 +106,7 @@ function play(item) {
         iconUrl: (item.url_icon || item.image)
       };
 
-      print(playItem);
-
+      print(playItem); // log
       boxeeAPI.mediaPlayer().open(playItem);
     }
   } catch (e) {
@@ -132,8 +140,9 @@ function onMediaStatusChanged() {
 }
 
 function returnResponse(status, response, handler) {
-  if (status === 200 && response !== undefined && response)
+  if (status === 200 && response !== undefined && response) {
     handler.target(new RequestResult(-1, response), handler);
+  }
   else {
     printf("ERROR: status returned was %d", status);
     handler.target(new RequestResult(0, response), handler);
@@ -145,8 +154,9 @@ function handleResponse(type, responseText) {
     if (type === DataType.XML) {
       responseText = boxeeAPI.xmlToJson(responseText)
       responseText = eval('(' + responseText + ')');
-    } else if (type === DataType.JSON)
+    } else if (type === DataType.JSON) {
       responseText = eval('(' + responseText + ')');
+    }
   } catch (e) {
     responseText = undefined;
   }
@@ -161,18 +171,18 @@ function getData(url, type, handler) {
   request.onreadystatechange = function() {
     if (request.readyState === request.DONE) {
       var response = handleResponse(type, request.responseText);
-
-      if (handler.params.loader === undefined || handler.params.loader)
+      if (handler.params.loader === undefined || handler.params.loader) {
         uiHideWait();
-
+      }
       returnResponse(request.status, response, handler);
     }
   }
 
   request.open("GET", url, true);
 
-  if (handler.params.loader === undefined || handler.params.loader)
+  if (handler.params.loader === undefined || handler.params.loader) {
     uiShowWait();
+  }
 
   request.send();
 }
@@ -190,8 +200,9 @@ function handle_getPromos(request, handler) {
     var promos = request.response.promos.promo;
 
     for (var i = 0; i < promos.length; i++) {
-      if (promos[i].media === undefined)
+      if (promos[i].media === undefined) {
         continue;
+      }
 
       print(JSON.stringify(promos[i]));
       var promo = {
@@ -210,8 +221,9 @@ function handle_getPromos(request, handler) {
         }
       }
 
-      if (promo.url)
+      if (promo.url) {
         result.push(promo);
+      }
     }
 
     uiFillList(result, promoList.model, true);
@@ -273,9 +285,9 @@ function handle_getEpisodes(request, handler) {
 
       if (episodes[i].media_content !== undefined) {
         episode.url = episodes[i].media_content._url;
-        if (episodes[i].media_content.media_thumbnail !== undefined)
+        if (episodes[i].media_content.media_thumbnail !== undefined) {
           episode.image = episodes[i].media_content.media_thumbnail._url.replace('-mini.', '-medium.');
-
+        }
         result.push(episode);
       }
     }
@@ -283,8 +295,9 @@ function handle_getEpisodes(request, handler) {
     uiFillList(result, episodeList.model, true);
   }
 
-  if (isFunction(handler.params.callback))
+  if (isFunction(handler.params.callback)) {
     handler.params.callback();
+  }
 }
 
 function exitConfirmed() {

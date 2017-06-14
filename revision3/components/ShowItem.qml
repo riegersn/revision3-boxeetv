@@ -19,7 +19,9 @@ Item {
     opacity: (wrapper.ListView.isCurrentItem && (showList.activeFocus || episodeList.activeFocus)) ? 1 : 0.1
 
     Behavior on opacity {
-      NumberAnimation { duration: 200 }
+      NumberAnimation {
+        duration: 200
+      }
     }
 
     Image {
@@ -37,10 +39,17 @@ Item {
       sourceSize.width: parent.width
       sourceSize.height: parent.height
       opacity: 0
-      onStatusChanged: if (status === Image.Ready) opacity = 1;
+
+      onStatusChanged: {
+        if (status === Image.Ready) {
+          opacity = 1;
+        }
+      }
 
       Behavior on opacity {
-        NumberAnimation { duration: 200 }
+        NumberAnimation {
+          duration: 200
+        }
       }
     }
   }
@@ -53,7 +62,9 @@ Item {
     opacity: (wrapper.ListView.isCurrentItem && showList.activeFocus) ? 1 : 0.0
 
     Behavior on opacity {
-      NumberAnimation { duration: 200 }
+      NumberAnimation {
+        duration: 200
+      }
     }
   }
 
@@ -70,7 +81,9 @@ Item {
     opacity: (wrapper.ListView.isCurrentItem && showList.activeFocus) ? 1 : 0.0
 
     Behavior on opacity {
-      NumberAnimation { duration: 200 }
+      NumberAnimation {
+        duration: 200
+      }
     }
   }
 }
